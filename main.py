@@ -1,5 +1,6 @@
 import os
-from google.cloud import vision_v1p3beta1 as vision
+import pandas as pd
+from PIL import Image
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
@@ -41,8 +42,13 @@ def detect_text(path):
 
     return document.text
 
-
 image_path = 'images/test.png'
+
+with Image.open(image_path) as img:
+    IMAGE_WIDTH, IMAGE_HEIGHT = img.size
+
+WORD_THRESHOLD = IMAGE_WIDTH * 0.05
+
 text = detect_text(image_path)
 
 avg_x_all = []
@@ -64,7 +70,7 @@ for i in range(len(words)):
 
     word_coord[(avg_x, avg_y)] = words[i]
 
-    #print(f"Average coordinates for {words[i]}: (x: {avg_x}, y: {avg_y})")
+    # print(f"Average coordinates for {words[i]}: (x: {avg_x}, y: {avg_y})")
 
 
 # Calculate rows
@@ -82,7 +88,8 @@ for i in range(len(avg_y_all)):
         count += 1
 
     if len(rows) > 0:
-        if abs(current - avg_y_all[i]) > COORDINATE_THRESHOLD * current or abs(current - avg_y_all[i]) > COORDINATE_THRESHOLD * rows[0]:
+        if abs(current - avg_y_all[i]) > COORDINATE_THRESHOLD * current or abs(
+                current - avg_y_all[i]) > COORDINATE_THRESHOLD * rows[0]:
             rows.append(current)
             current = avg_y_all[i]
             count = 1
@@ -103,7 +110,55 @@ for i in range(len(avg_y_all)):
         rows.append(current)
 
 table = []
-#print(sorted_coords)
+# print(sorted_coords)
+# print(word_coord)
+
+
+# Combine words that are close on the x-axis and below the word threshold
+# combined_table = []
+# current_row = []
+# current_x = None
+# current_y = None
+# previous_x = None
+#
+# for i in range(len(sorted_coords)):
+#     try:
+#         coord = sorted_coords[i]
+#     except:
+#         break
+#
+#     if i == 0:
+#         current_x = coord[0]
+#         current_y = coord[1]
+#         previous_x = coord[0]
+#         continue
+#
+#     if abs(current_x - coord[0]) <= WORD_THRESHOLD:
+#         new_coord = ((current_x + coord[0])/2, (current_y + coord[1])/2)
+#         sorted_coords[i] = (new_coord[0], new_coord[1])
+#         sorted_coords.pop(i - 1)
+#
+#         word_coord[new_coord] = word_coord[(current_x, current_y)] + " " + word_coord[coord]
+#         word_coord.pop((current_x, current_y))
+#
+#         previous_x = current_x
+#
+#     elif abs(previous_x - coord[0]) <= WORD_THRESHOLD:
+#         new_coord = ((previous_x + coord[0])/2, (current_y + coord[1])/2)
+#         sorted_coords[i] = (new_coord[0], new_coord[1])
+#         sorted_coords.pop(i - 1)
+#
+#         word_coord[new_coord] = word_coord[(current_x, current_y)] + " " + word_coord[coord]
+#         word_coord.pop((current_x, current_y))
+#
+#         previous_x = coord[0]
+#
+#     current_x = coord[0]
+#     current_y = coord[1]
+#
+# print(sorted_coords)
+# print(word_coord)
+
 
 # Coordinates separation
 for i in range(len(rows)):
@@ -114,13 +169,13 @@ for i in range(len(rows)):
                 sorted_coords.pop(0)
             break
         if j == len(sorted_coords) - 1:
-            table.append(sorted_coords[0:j+1])
+            table.append(sorted_coords[0:j + 1])
             sorted_coords = []
             break
 
 for i in range(len(table)):
     table[i].sort(key=lambda coord: coord[0])
-    #print(table[i])
+    # print(table[i])
 
 sorted_table = dict()
 
@@ -130,3 +185,11 @@ for i in range(len(table)):
         sorted_table[i].append(word_coord[table[i][j]])
 
 print(sorted_table)
+
+df = pd.DataFrame.from_dict(sorted_table, orient='index')
+
+# Save the DataFrame to an Excel file
+excel_path = 'output.xlsx'
+df.to_excel(excel_path, index=False)
+
+print(f"Excel file saved at: {excel_path}")
