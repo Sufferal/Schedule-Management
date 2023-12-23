@@ -1,2 +1,4 @@
 /credentials.json
 /venv
+/sheets.json
+__pycache__
