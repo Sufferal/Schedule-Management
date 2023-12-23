@@ -3,8 +3,11 @@ from google.cloud import vision_v1p3beta1 as vision
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
+COORDINATE_THRESHOLD = 1
+
 coordinates = []
 words = []
+word_coord = dict()
 
 
 def detect_text(path):
@@ -41,12 +44,10 @@ def detect_text(path):
 
 image_path = 'images/test.png'
 text = detect_text(image_path)
-#print(words)
-#print(coordinates)
 
 avg_x_all = []
 avg_y_all = []
-coords = []
+avg_coords = []
 
 # Calculate the average coordinates for each word
 for i in range(len(words)):
@@ -59,7 +60,10 @@ for i in range(len(words)):
     avg_y = sum(y_coordinates) / len(y_coordinates)
     avg_y_all.append(avg_y)
     avg_x_all.append(avg_x)
-    coords.append((avg_x, avg_y))
+    avg_coords.append((avg_x, avg_y))
+
+    word_coord[(avg_x, avg_y)] = words[i]
+
     #print(f"Average coordinates for {words[i]}: (x: {avg_x}, y: {avg_y})")
 
 
@@ -68,49 +72,61 @@ rows = []
 current = 0
 avg_y_all.sort()
 avg_x_all.sort()
-sorted_coords = sorted(coords, key=lambda coord: coord[1])
+sorted_coords = sorted(avg_coords, key=lambda coord: coord[1])
+count = 0
 
 for i in range(len(avg_y_all)):
     isRow = False
     if i == 0:
         current = avg_y_all[i]
+        count += 1
 
     if len(rows) > 0:
-        if abs(current - avg_y_all[i]) > 0.5 * current or abs(current - avg_y_all[i]) > 0.5 * rows[0]:
+        if abs(current - avg_y_all[i]) > COORDINATE_THRESHOLD * current or abs(current - avg_y_all[i]) > COORDINATE_THRESHOLD * rows[0]:
             rows.append(current)
             current = avg_y_all[i]
+            count = 1
             continue
     else:
-        if abs(current - avg_y_all[i]) > 0.5 * current:
+        if abs(current - avg_y_all[i]) > COORDINATE_THRESHOLD * current:
             rows.append(current)
             current = avg_y_all[i]
+            count = 1
             continue
 
-    current *= i
+    current *= count
     current += avg_y_all[i]
-    current /= (i + 1)
+    count += 1
+    current /= count
 
-for coord in sorted_coords:
-    print(coord)
-print(rows)
+    if i == len(avg_y_all) - 1:
+        rows.append(current)
 
 table = []
+#print(sorted_coords)
 
-# Coord separation
+# Coordinates separation
 for i in range(len(rows)):
     for j in range(len(sorted_coords)):
-        if (sorted_coords[j][1] - rows[i]) > 0.5 * rows[i]:
+        if abs((sorted_coords[j][1] - rows[i])) > COORDINATE_THRESHOLD * rows[0]:
             table.append(sorted_coords[0:j])
             for z in range(j):
                 sorted_coords.pop(0)
             break
-
-filled_table = dict()
+        if j == len(sorted_coords) - 1:
+            table.append(sorted_coords[0:j+1])
+            sorted_coords = []
+            break
 
 for i in range(len(table)):
-    for j in range(len(table[i])):
-        for z in range(len(coordinates)):
-            if table[i][j] in coordinates[z]:
-                filled_table[i][j] = words[z]
+    table[i].sort(key=lambda coord: coord[0])
+    #print(table[i])
 
-print(filled_table)
+sorted_table = dict()
+
+for i in range(len(table)):
+    sorted_table[i] = []
+    for j in range(len(table[i])):
+        sorted_table[i].append(word_coord[table[i][j]])
+
+print(sorted_table)
