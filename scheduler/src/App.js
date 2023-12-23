@@ -1,4 +1,4 @@
-import './App.css';
+import './styles/App.css';
 import ButtonList from './components/ButtonList';
 import Navbar from './components/Navbar';
 import Preview from './components/Preview';

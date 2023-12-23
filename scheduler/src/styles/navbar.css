@@ -1,0 +1,14 @@
+.navbar {
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}

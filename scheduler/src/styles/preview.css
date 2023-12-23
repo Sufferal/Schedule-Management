@@ -1,0 +1,19 @@
+.preview {
+  margin-bottom: 4 rem;  
+}
+
+.preview-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-img {
+  width: 250px;
+  height: auto;
+}
+
+.preview-title {
+  margin: 2rem 0;
+  text-align: center;
+}

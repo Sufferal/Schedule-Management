@@ -1,12 +1,16 @@
 import React from 'react'
-import Button from './Button'
+import '../styles/buttons.css'
 
 const ButtonList = () => {
   return (
-    <div>
-      <Button />
-      <Button />
-      <Button />
+    <div className='btn-wrapper'>
+      <h2 className='btn-heading'>Select a file to scan</h2>
+      <input type="file" />
+      
+      <div className="actions">
+        <button>Convert</button>
+        <button>Download</button>
+      </div>
     </div>
   )
 }

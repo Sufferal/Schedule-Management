@@ -1,0 +1,24 @@
+:root {
+  --max-width: 750px;
+}
+
+.algo-title {
+  margin-bottom: 1rem;
+}
+
+.algo-description {
+  max-width: var(--max-width); 
+  margin-bottom: 3rem;
+}
+
+.step {
+  margin-bottom: 1.5rem;
+}
+
+.step-title {
+  margin-bottom: 1rem;
+}
+
+.step-desc {
+  max-width: var(--max-width); 
+}
