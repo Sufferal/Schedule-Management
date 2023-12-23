@@ -66,13 +66,8 @@ for i in range(len(words)):
 # Calculate rows
 rows = []
 current = 0
-sorted_tuples = sorted(coords, key=lambda tup: (tup[1], tup[0]))
 avg_y_all.sort()
 avg_x_all.sort()
-
-
-for i in range(len(avg_x_all)):
-    coords.append((avg_x_all[i], avg_y_all[i]))
 
 for i in range(len(avg_y_all)):
     isRow = False
@@ -94,5 +89,6 @@ for i in range(len(avg_y_all)):
     current += avg_y_all[i]
     current /= (i + 1)
 
-# print(rows)
+print(avg_x_all)
+print(avg_y_all)
 print(coords)
