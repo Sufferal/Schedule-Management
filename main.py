@@ -68,6 +68,7 @@ rows = []
 current = 0
 avg_y_all.sort()
 avg_x_all.sort()
+sorted_coords = sorted(coords, key=lambda coord: coord[1])
 
 for i in range(len(avg_y_all)):
     isRow = False
@@ -89,10 +90,27 @@ for i in range(len(avg_y_all)):
     current += avg_y_all[i]
     current /= (i + 1)
 
-print(avg_x_all)
-print(avg_y_all)
-print(coords)
-sorted_coords = sorted(coords, key=lambda coord: coord[1])
 for coord in sorted_coords:
     print(coord)
 print(rows)
+
+table = []
+
+# Coord separation
+for i in range(len(rows)):
+    for j in range(len(sorted_coords)):
+        if (sorted_coords[j][1] - rows[i]) > 0.5 * rows[i]:
+            table.append(sorted_coords[0:j])
+            for z in range(j):
+                sorted_coords.pop(0)
+            break
+
+filled_table = dict()
+
+for i in range(len(table)):
+    for j in range(len(table[i])):
+        for z in range(len(coordinates)):
+            if table[i][j] in coordinates[z]:
+                filled_table[i][j] = words[z]
+
+print(filled_table)
