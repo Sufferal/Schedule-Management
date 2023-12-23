@@ -92,3 +92,7 @@ for i in range(len(avg_y_all)):
 print(avg_x_all)
 print(avg_y_all)
 print(coords)
+sorted_coords = sorted(coords, key=lambda coord: coord[1])
+for coord in sorted_coords:
+    print(coord)
+print(rows)
