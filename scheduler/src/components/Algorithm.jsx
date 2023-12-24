@@ -31,7 +31,7 @@ const Algorithm = () => {
       </p>
      <div className='column-container'>
      <div className='left-column'>
-      {steps.map((step) => (<Step title={step.title}></Step>))}
+      {steps.map((step, index) => (<Step key={index} title={step.title}></Step>))}
      </div>
       <div className='specific-column'>
         {steps.map((step, index) => (
