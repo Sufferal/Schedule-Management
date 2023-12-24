@@ -1,13 +1,45 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/buttons.css';
+import preview from '../images/preview.png';
+import '../styles/preview.css';
 
 const ButtonList = () => {
   const [file, setFile] = useState(false);
   const [convertClicked, setConvertClicked] = useState(false);
   const [downloadClicked, setDownloadClicked] = useState(false);
+  const [previewClicked, setPreviewClicked] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
+  async function handlePreview() {
+    setPreviewClicked(true);
+
+    if (!file || !isSuccessful || !convertClicked) {
+      return;
+    }
+
+    console.log('Preview')
+    // Check if imgEl exists, if so, remove it
+    if (document.querySelector('.centered-img')) {
+      document.querySelector('.centered-img').remove()
+    }
+    
+    const response = await axios.get('http://localhost:5000/preview', {
+        responseType: 'blob', // Set the response type to blob
+    });
+
+    console.log(response.data)
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const imgEl = document.createElement('img');
+    imgEl.src = url;
+    imgEl.classList.add('centered-img'); 
+      
+    // Insert after the preview button
+    const previewBtn = document.querySelector('.preview-btn');
+    previewBtn.parentNode.insertBefore(imgEl, previewBtn.nextSibling);
+  }
+  
   function handleFileChange(e) {
     setFile(e.target.files[0]);
   }
@@ -18,6 +50,8 @@ const ButtonList = () => {
     if (!file) {
       return;
     }
+
+    setIsLoading(true);
 
     const formData = new FormData();
     formData.append('file', file);
@@ -32,6 +66,7 @@ const ButtonList = () => {
       console.log('Server response:', response.data);
       if (response.data.status === "success") {
         setIsSuccessful(true);
+        setIsLoading(false);
       }
     }
     catch (error) {
@@ -65,7 +100,17 @@ const ButtonList = () => {
   }
 
   return (
-    <div >
+    <div>
+      <div className='preview'>
+        <a className='preview-btn' href='#' onClick={handlePreview}>
+          <img className='preview-img' src={preview} alt="preview" />
+        </a>
+        {previewClicked && !isSuccessful && (
+          <p className='error'>Select and convert the file first</p>
+        )}
+        <button className='preview-title btn-preview' onClick={handlePreview}>Preview</button>
+      </div>
+
       <h2 className='btn-heading'>Select a file to scan</h2>
       <input type="file" className='btn-wrapper' onChange={handleFileChange}  />
       {(convertClicked || downloadClicked) && !file && (
@@ -77,6 +122,14 @@ const ButtonList = () => {
       <div className="actions">
         <button className='btn-convert' onClick={handleConvert}>Convert</button>
         <button onClick={handleDownload}>Download</button>
+      </div>
+
+      <div className={`modal-container ${isLoading ? 'show' : 'hide'}`}>
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Converting...</h2>
+          </div>
+        </div>
       </div>
     </div>
   )

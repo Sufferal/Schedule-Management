@@ -1,14 +1,8 @@
-import sys
-from PIL import Image
+import imgkit
+import subprocess
+
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: py test_src.py <image>")
-        return
-        
-    filename = sys.argv[1]
-    print(f"Processing file and doing stuff: {filename}")
-    image = Image.open(filename)
-    image.show()
+  subprocess.run(['wkhtmltoimage', 'preview.html', 'preview.png'])
 
 if __name__ == '__main__':
     main()

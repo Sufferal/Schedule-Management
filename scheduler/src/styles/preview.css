@@ -1,6 +1,9 @@
 .preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-top: 3rem;
-  margin-bottom: 4rem;  
 }
 
 .preview-btn {
@@ -17,4 +20,42 @@
 .preview-title {
   margin: 2rem 0;
   text-align: center;
+}
+
+.centered-img {
+  display: block;
+  margin: 0 auto;
+  margin-left: 40rem;
+  margin-top: 2rem;
+}
+
+.preview button {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 1rem 2rem; /* Larger padding */
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+  cursor: pointer;
+  font-size: 1.7rem; /* Larger font size */
+  font-weight: bold;
+
+  border-radius: 7px; /* Rounded corners */
+  transition: opacity 0.3s ease;
+}
+
+.btn-preview {
+  background-color: #444CF7 !important;
+}
+
+.actions button:hover {
+  opacity: 0.85;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
 }
