@@ -14,9 +14,12 @@ def convert():
 
     if file.filename == '':
         return 'No selected file'
+    
+    # Save the file
+    file.save(file.filename)
 
     try:
-        subprocess.run(['python', 'test_scr.py', file.filename], check=True)
+        subprocess.run(['python', 'main.py', file.filename], check=True)
         return {
             'status': 'success',
             'message': 'File uploaded: {}'.format(file.filename)

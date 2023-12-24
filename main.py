@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas as pd
 from PIL import Image
 
@@ -42,7 +43,11 @@ def detect_text(path):
 
     return document.text
 
-image_path = 'images/test.png'
+# image_path = 'images/test.png'
+if len(sys.argv) != 2:
+    print("Usage: python main.py <image>")
+    exit(1)
+image_path = sys.argv[1] 
 
 with Image.open(image_path) as img:
     IMAGE_WIDTH, IMAGE_HEIGHT = img.size
