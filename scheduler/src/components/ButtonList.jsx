@@ -6,6 +6,7 @@ const ButtonList = () => {
   const [file, setFile] = useState(false);
   const [convertClicked, setConvertClicked] = useState(false);
   const [downloadClicked, setDownloadClicked] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(false);
 
   function handleFileChange(e) {
     setFile(e.target.files[0]);
@@ -29,6 +30,9 @@ const ButtonList = () => {
       });
 
       console.log('Server response:', response.data);
+      if (response.data.status === "success") {
+        setIsSuccessful(true);
+      }
     }
     catch (error) {
       console.error('Error uploading file:', error.message);
@@ -38,7 +42,7 @@ const ButtonList = () => {
   async function handleDownload() {
     setDownloadClicked(true);
 
-    if (!file) {
+    if (!file || !isSuccessful) {
       return;
     }
 
@@ -67,8 +71,11 @@ const ButtonList = () => {
       {(convertClicked || downloadClicked) && !file && (
         <p className='error'>Please select a file to scan</p>
       )}
+      {downloadClicked && file && !isSuccessful && (
+        <p className='error'>Please convert the file first</p>
+      )}
       <div className="actions">
-        <button onClick={handleConvert}>Convert</button>
+        <button className='btn-convert' onClick={handleConvert}>Convert</button>
         <button onClick={handleDownload}>Download</button>
       </div>
     </div>

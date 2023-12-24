@@ -13,10 +13,10 @@
 }
 
 .algo-description {
-  /* max-width: var(--max-width);  */
-  margin-bottom: 3rem;
-  margin-left: 4rem;
-  margin-right: 6rem;
+  /* max-width: var(--max-width); */
+  margin-bottom: 5rem;
+  margin-left: 33rem;
+  margin-right: 30rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,10 +33,16 @@
 
 .step-title {
   margin-bottom: 6rem;
+  margin-left: 10rem;
+  background-color: #000;
+  padding: 0.5rem;
+  color: #fff;
+  border-radius: 5px;
   /* margin-left: 5px; */
 }
 
 .step-desc {
+  font-size: 1.5rem;
   max-width: var(--max-width); 
 }
 
@@ -53,6 +59,10 @@
 .left-column {
   margin-left: 12%;
   flex: 0 0 30%; /* 30% width, don't grow or shrink */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .specific-column {

@@ -17,11 +17,15 @@ def convert():
 
     try:
         subprocess.run(['python', 'test_scr.py', file.filename], check=True)
-        return f'File uploaded: {file.filename}. Processing completed.'
-        # return send_file('output.xlsx', as_attachment=True)
+        return {
+            'status': 'success',
+            'message': 'File uploaded: {}'.format(file.filename)
+        }
     except subprocess.CalledProcessError:
-        return 'Error processing file'
-    # return f'File uploaded: {file.filename}'
+        return {
+            'status': 'error',
+            'message': 'Error processing file'
+        }
 
 @app.route('/download', methods=['GET'])
 def download():

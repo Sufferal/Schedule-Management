@@ -37,6 +37,7 @@ const Algorithm = () => {
         {steps.map((step, index) => (
           <Step
             key={index}
+            title={"false"}
             description={step.description}
           />
         ))}
