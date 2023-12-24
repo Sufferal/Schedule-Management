@@ -1,15 +1,40 @@
 .btn-wrapper {
-  margin-bottom: 2rem;
+  margin-top: 5px;
+  margin-left: 45%;
+ 
 }
 
 .btn-heading {
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .actions {
   margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  
 }
 
 .actions button {
-  margin-right: 2rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 15px 40px; /* Larger padding */
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  margin-left: 3rem;
+  margin-right: 1rem ;
+  cursor: pointer;
+  font-size: 1.4rem; /* Larger font size */
+  border-radius: 10px; /* Rounded corners */
+  transition: background-color 0.3s ease;
 }
+
+.actions button:hover {
+  background-color: #45a049;
+}
+
+
+

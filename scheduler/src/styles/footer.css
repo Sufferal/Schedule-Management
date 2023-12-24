@@ -1,5 +1,8 @@
 .footer {
   margin: 5rem 0;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color:  #F0CEF7;
 }
 
 .footer-title {

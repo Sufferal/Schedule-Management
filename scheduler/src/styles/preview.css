@@ -1,5 +1,6 @@
 .preview {
-  margin-bottom: 4 rem;  
+  margin-top: 3rem;
+  margin-bottom: 4rem;  
 }
 
 .preview-btn {
@@ -9,7 +10,7 @@
 }
 
 .preview-img {
-  width: 250px;
+  width: 200px;
   height: auto;
 }
 

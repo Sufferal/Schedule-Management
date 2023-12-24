@@ -1,6 +1,7 @@
 import React from 'react'
 import Step from './Step'
 
+
 const Algorithm = () => {
   const steps = [
     {
@@ -18,7 +19,8 @@ const Algorithm = () => {
   ];
 
   return (
-    <div>
+   
+    <div >
       <h2 className='algo-title'>Algorithm</h2>
       <p className="algo-description">
         Optical character recognition or optical character reader (OCR) is the electronic or mechanical 
@@ -27,16 +29,21 @@ const Algorithm = () => {
         (for example the text on signs and billboards in a landscape photo) or from subtitle text 
         superimposed on an image (for example: from a television broadcast).
       </p>
-      <div>
+     <div className='column-container'>
+     <div className='left-column'>
+      {steps.map((step) => (<Step title={step.title}></Step>))}
+     </div>
+      <div className='specific-column'>
         {steps.map((step, index) => (
           <Step
             key={index}
-            title={step.title}
             description={step.description}
           />
         ))}
       </div>
-    </div>
+      </div>
+    </div >
+
   )
 }
 

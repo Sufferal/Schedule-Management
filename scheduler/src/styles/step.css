@@ -4,21 +4,57 @@
 
 .algo-title {
   margin-bottom: 1rem;
+  /* margin-left: 2rem; */
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 }
 
 .algo-description {
-  max-width: var(--max-width); 
+  /* max-width: var(--max-width);  */
   margin-bottom: 3rem;
+  margin-left: 4rem;
+  margin-right: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+
+
 .step {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 1.5rem;
 }
 
 .step-title {
-  margin-bottom: 1rem;
+  margin-bottom: 6rem;
+  /* margin-left: 5px; */
 }
 
 .step-desc {
   max-width: var(--max-width); 
+}
+
+.column-container {
+  display: flex;
+  column-count: 2;
+  column-gap: 5px;
+}
+
+.column-container p {
+  margin-bottom: 10px;
+}
+
+.left-column {
+  margin-left: 12%;
+  flex: 0 0 30%; /* 30% width, don't grow or shrink */
+}
+
+.specific-column {
+  break-before: column; /* Force a column break before this element */
 }

@@ -3,9 +3,9 @@ import '../styles/buttons.css'
 
 const ButtonList = () => {
   return (
-    <div className='btn-wrapper'>
+    <div >
       <h2 className='btn-heading'>Select a file to scan</h2>
-      <input type="file" />
+      <input type="file" className='btn-wrapper'/>
       
       <div className="actions">
         <button>Convert</button>

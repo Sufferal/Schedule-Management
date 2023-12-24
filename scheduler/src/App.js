@@ -4,10 +4,11 @@ import Navbar from './components/Navbar';
 import Preview from './components/Preview';
 import Algorithm from './components/Algorithm';
 import Footer from './components/Footer';
+import './styles/App.css'
 
 function App() {
   return (
-    <div>
+    <div >
       <Navbar />
       <Preview />
       <ButtonList />
