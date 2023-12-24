@@ -4,8 +4,11 @@ from PIL import Image
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 
+COORDINATE_THRESHOLD = 1
+
 coordinates = []
 words = []
+word_coord = dict()
 
 
 def detect_text(path):
@@ -52,7 +55,7 @@ text = detect_text(image_path)
 
 avg_x_all = []
 avg_y_all = []
-coords = []
+avg_coords = []
 
 # Calculate the average coordinates for each word
 for i in range(len(words)):
@@ -77,32 +80,36 @@ rows = []
 current = 0
 avg_y_all.sort()
 avg_x_all.sort()
-sorted_coords = sorted(coords, key=lambda coord: coord[1])
+sorted_coords = sorted(avg_coords, key=lambda coord: coord[1])
+count = 0
 
 for i in range(len(avg_y_all)):
     isRow = False
     if i == 0:
         current = avg_y_all[i]
+        count += 1
 
     if len(rows) > 0:
         if abs(current - avg_y_all[i]) > COORDINATE_THRESHOLD * current or abs(
                 current - avg_y_all[i]) > COORDINATE_THRESHOLD * rows[0]:
             rows.append(current)
             current = avg_y_all[i]
+            count = 1
             continue
     else:
-        if abs(current - avg_y_all[i]) > 0.5 * current:
+        if abs(current - avg_y_all[i]) > COORDINATE_THRESHOLD * current:
             rows.append(current)
             current = avg_y_all[i]
+            count = 1
             continue
 
-    current *= i
+    current *= count
     current += avg_y_all[i]
-    current /= (i + 1)
+    count += 1
+    current /= count
 
-for coord in sorted_coords:
-    print(coord)
-print(rows)
+    if i == len(avg_y_all) - 1:
+            rows.append(current)
 
 table = []
 # print(sorted_coords)
@@ -158,7 +165,7 @@ table = []
 # Coord separation
 for i in range(len(rows)):
     for j in range(len(sorted_coords)):
-        if (sorted_coords[j][1] - rows[i]) > 0.5 * rows[i]:
+        if abs((sorted_coords[j][1] - rows[i])) > COORDINATE_THRESHOLD * rows[0]:
             table.append(sorted_coords[0:j])
             for z in range(j):
                 sorted_coords.pop(0)
@@ -177,9 +184,7 @@ sorted_table = dict()
 for i in range(len(table)):
     sorted_table[i] = []
     for j in range(len(table[i])):
-        for z in range(len(coordinates)):
-            if table[i][j] in coordinates[z]:
-                filled_table[i][j] = words[z]
+        sorted_table[i].append(word_coord[table[i][j]])
 
 print(sorted_table)
 
