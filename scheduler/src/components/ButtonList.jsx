@@ -71,7 +71,7 @@ const ButtonList = () => {
       {(convertClicked || downloadClicked) && !file && (
         <p className='error'>Please select a file to scan</p>
       )}
-      {downloadClicked && file && !isSuccessful && (
+      {!convertClicked && downloadClicked && file && !isSuccessful && (
         <p className='error'>Please convert the file first</p>
       )}
       <div className="actions">
